@@ -12,7 +12,7 @@ public class MateStack<T> {
             arrayCapacity *= 2;
             T[] newArray = (T[]) new Object[arrayCapacity];
 
-            for (int i = 0; i < array.length; i++) {
+            for (int i = 0; i < size; i++) {
                 newArray[i] = array[i];
             }
             array = newArray;
@@ -40,5 +40,9 @@ public class MateStack<T> {
 
     public int size() {
         return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 }
