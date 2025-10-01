@@ -3,38 +3,30 @@ package core.stack;
 import java.util.EmptyStackException;
 
 public class MateStack<T> {
+    private static final int DEFAULT_CAPACITY = 16;
     private int size = 0;
-    private int arrayCapacity = 16;
-    private T[] array = (T[]) new Object[arrayCapacity];
+    private T[] array;
+
+    @SuppressWarnings("unchecked")
+    public MateStack() {
+        array = (T[]) new Object[DEFAULT_CAPACITY];
+    }
 
     public void push(T value) {
-        if (size >= arrayCapacity) {
-            arrayCapacity *= 2;
-            T[] newArray = (T[]) new Object[arrayCapacity];
-
-            for (int i = 0; i < size; i++) {
-                newArray[i] = array[i];
-            }
-            array = newArray;
-        }
-        size++;
-        array[size - 1] = value;
+        ensureCapacity(size + 1);
+        array[size++] = value;
     }
 
     public T peek() {
-        if (size == 0) {
-            throw new EmptyStackException();
-        }
+        ensureNotEmpty();
         return array[size - 1];
     }
 
     public T pop() {
-        if (size == 0) {
-            throw new EmptyStackException();
-        }
+        ensureNotEmpty();
+        T result = array[size - 1];
+        array[size - 1] = null;
         size--;
-        T result = array[size];
-        array[size] = null;
         return result;
     }
 
@@ -44,5 +36,24 @@ public class MateStack<T> {
 
     public boolean isEmpty() {
         return size == 0;
+    }
+
+    private void ensureNotEmpty() {
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > array.length) {
+            int newCapacity = array.length * 2;
+            if (newCapacity < minCapacity) {
+                newCapacity = minCapacity;
+            }
+            T[] newArray = (T[]) new Object[newCapacity];
+            System.arraycopy(array,0,newArray,0,size);
+            array = newArray;
+        }
     }
 }
