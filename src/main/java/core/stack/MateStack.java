@@ -33,9 +33,9 @@ public class MateStack<T> {
             throw new EmptyStackException();
         }
         size--;
-        T value = array[size];
+        T result = array[size];
         array[size] = null;
-        return value;
+        return result;
     }
 
     public int size() {
