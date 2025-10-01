@@ -1,19 +1,44 @@
 package core.stack;
 
-public class MateStack<T> {
-    public void push(T value) {
+import java.util.EmptyStackException;
 
+public class MateStack<T> {
+    private int size = 0;
+    private int arrayCapacity = 16;
+    private T[] array = (T[]) new Object[arrayCapacity];
+
+    public void push(T value) {
+        if (size >= arrayCapacity) {
+            arrayCapacity *= 2;
+            T[] newArray = (T[]) new Object[arrayCapacity];
+
+            for (int i = 0; i < array.length; i++) {
+                newArray[i] = array[i];
+            }
+            array = newArray;
+        }
+        size++;
+        array[size - 1] = value;
     }
 
     public T peek() {
-        return null;
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+        return array[size - 1];
     }
 
     public T pop() {
-        return null;
+        if (size == 0) {
+            throw new EmptyStackException();
+        }
+        size--;
+        T value = array[size];
+        array[size] = null;
+        return value;
     }
 
     public int size() {
-        return 0;
+        return size;
     }
 }
